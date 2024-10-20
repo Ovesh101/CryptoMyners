@@ -10,7 +10,7 @@ const Terms = () => {
           Terms and Conditions
         </h1>
 
-        <p className="text-white mb-4">Effective Date: [Insert Date]</p>
+        <p className="text-white mb-4">Effective Date: 01-01-2022</p>
 
         <p className="text-white mb-4">
           These Terms and Conditions ("Terms") govern the use of the services provided by Cryptomyner ("Company", "we", "us", or "our"). By accessing or using our website, platform, or services, you ("User", "Investor", or "you") agree to comply with and be bound by these Terms. If you do not agree with these Terms, please refrain from using our services.
