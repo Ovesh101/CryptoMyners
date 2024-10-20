@@ -1,4 +1,4 @@
-import BackButton from "./BackButton";
+
 
 const Privacy_Policy = () => {
   return (

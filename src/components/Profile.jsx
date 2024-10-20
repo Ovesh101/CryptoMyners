@@ -15,7 +15,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
   const [showModal, setShowModal] = useState(false);
-  const [userId, setUserId] = useLocalStorage("authToken"); // 1 day expiry
+  const [userId] = useLocalStorage("authToken"); // 1 day expiry
   const [copySuccess, setCopySuccess] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();

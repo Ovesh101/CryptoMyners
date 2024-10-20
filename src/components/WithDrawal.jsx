@@ -4,6 +4,7 @@ import useLocalStorage from "../utils/hooks/useLocalStorage";
 import LoadingIcon from "./LoadingIcon";
 import MessageBox from "./MessageBox";
 import BackButton from "./BackButton";
+import { useNavigate } from "react-router-dom";
 
 const WithDrawal = () => {
   const [userId] = useLocalStorage("authToken"); // 1 hour expiry
@@ -11,6 +12,7 @@ const WithDrawal = () => {
   const [successWithdrawals, setSuccessWithdrawals] = useState([]);
   const [activeTab, setActiveTab] = useState("pending");
   const [loading, setLoading] = useState(true); // Loading state
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getPendingUrl = `${HOST_URL}/user+withdrawal/getsingle+pending+withdrawals/${userId}`;
@@ -61,7 +63,7 @@ const WithDrawal = () => {
   }
 
   return (
-    <section className="bg-[#161925]  p-6" >
+    <section className="bg-[#161925]  p-6">
       <MessageBox name="withdrawal" />
       <BackButton />
 
@@ -104,40 +106,50 @@ const WithDrawal = () => {
               <thead className="bg-violet-600 text-white">
                 <tr>
                   <th className="py-2 md:py-4 px-2 text-left font-semibold text-[10px] md:text-[16px] uppercase ">
-                   Date
+                    Date
                   </th>
                   <th className="py-2 md:py-4 px-2 md:px-6 text-left font-semibold text-[10px] md:text-[16px] uppercase">
-                     Amount
+                    Amount
                   </th>
                   <th className="py-2 md:py-4 px-2 md:px-6 text-left font-semibold text-[10px] md:text-[16px] uppercase">
-                     Status
-                  </th> 
+                    Status
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {pendingWithdrawals.map((withdrawal) => (
-                  <tr
-                    key={withdrawal.id}
-                    className="border-t border-gray-200 hover:bg-gray-100 transition-colors duration-300"
-                  >
-                    <td className="py-2 md:py-3 px-2 md:px-6 text-gray-800 text-[10px] md:text-[16px]">
-                      {new Date(withdrawal.withdrawal_date).toLocaleDateString(
-                        "en-IN",
-                        {
+                {pendingWithdrawals.length > 0 ? (
+                  pendingWithdrawals.map((withdrawal) => (
+                    <tr
+                      key={withdrawal.id}
+                      className="border-t border-gray-200 hover:bg-gray-100 transition-colors duration-300"
+                    >
+                      <td className="py-2 md:py-3 px-2 md:px-6 text-gray-800 text-[10px] md:text-[16px]">
+                        {new Date(
+                          withdrawal.withdrawal_date
+                        ).toLocaleDateString("en-IN", {
                           year: "numeric",
                           month: "long",
                           day: "numeric",
-                        }
-                      )}
-                    </td>
-                    <td className="py-2 md:py-3 px-2 md:px-6 text-gray-800 text-[10px] md:text-[16px] ">
-                    ₹{withdrawal.withdrawal_amount}
-                    </td>
-                    <td className="py-2 md:py-3 px-2 md:px-6 text-gray-800 text-[10px] md:text-[16px] ">
-                      {withdrawal.is_success ? "Success" : "Pending"}
+                        })}
+                      </td>
+                      <td className="py-2 md:py-3 px-2 md:px-6 text-gray-800 text-[10px] md:text-[16px] ">
+                        ₹{withdrawal.withdrawal_amount}
+                      </td>
+                      <td className="py-2 md:py-3 px-2 md:px-6 text-gray-800 text-[10px] md:text-[16px] ">
+                        {withdrawal.is_success ? "Success" : "Pending"}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan="3"
+                      className="py-4 text-center text-gray-500 text-sm"
+                    >
+                      No pending withdrawals
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
@@ -153,40 +165,50 @@ const WithDrawal = () => {
               <thead className="bg-violet-600 text-white">
                 <tr>
                   <th className="py-4 md:px-6 px-2 text-left font-semibold text-[8px] md:text-[16px] uppercase tracking-wide">
-                   Date
+                    Date
                   </th>
                   <th className="py-4 md:px-6 px-2 text-left font-semibold text-[8px] md:text-[16px] uppercase tracking-wide">
-                     Amount
+                    Amount
                   </th>
                   <th className="py-4 md:px-6 px-2 text-left font-semibold text-[8px] md:text-[16px] uppercase tracking-wide">
-                   Status
+                    Status
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {successWithdrawals.map((withdrawal) => (
-                  <tr
-                    key={withdrawal.id}
-                    className="border-t border-gray-200 hover:bg-gray-100 transition-colors duration-300"
-                  >
-                    <td className="py-2 md:py-3 px-2 md:px-6 text-gray-800 text-[10px] md:text-[16px]">
-                      {new Date(withdrawal.withdrawal_date).toLocaleDateString(
-                        "en-IN",
-                        {
+                {successWithdrawals.length > 0 ? (
+                  successWithdrawals.map((withdrawal) => (
+                    <tr
+                      key={withdrawal.id}
+                      className="border-t border-gray-200 hover:bg-gray-100 transition-colors duration-300"
+                    >
+                      <td className="py-2 md:py-3 px-2 md:px-6 text-gray-800 text-[10px] md:text-[16px]">
+                        {new Date(
+                          withdrawal.withdrawal_date
+                        ).toLocaleDateString("en-IN", {
                           year: "numeric",
                           month: "long",
                           day: "numeric",
-                        }
-                      )}
-                    </td>
-                    <td className="py-2 md:py-3 px-2 md:px-6 text-gray-800 text-[10px] md:text-[16px] ">
-                    ₹{withdrawal.withdrawal_amount}
-                    </td>
-                    <td className="py-2 md:py-3 px-2 md:px-6 text-gray-800 text-[10px] md:text-[16px] ">
-                      {withdrawal.is_success ? "Success" : "Pending"}
+                        })}
+                      </td>
+                      <td className="py-2 md:py-3 px-2 md:px-6 text-gray-800 text-[10px] md:text-[16px] ">
+                        ₹{withdrawal.withdrawal_amount}
+                      </td>
+                      <td className="py-2 md:py-3 px-2 md:px-6 text-gray-800 text-[10px] md:text-[16px] ">
+                        {withdrawal.is_success ? "Success" : "Pending"}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan="3"
+                      className="py-4 text-center text-gray-500 text-sm"
+                    >
+                      No successful withdrawals
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>

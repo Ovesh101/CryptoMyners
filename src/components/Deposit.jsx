@@ -7,11 +7,11 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LoadingIcon from "./LoadingIcon"; // Import LoadingIcon component
 import toast from "react-hot-toast";
-import MessageBox from "./MessageBox";
+
 import BackButton from "./BackButton";
 
 const Deposit = () => {
-  const [userId, setUserId] = useLocalStorage("authToken"); // 1 hour expiry
+  const [userId] = useLocalStorage("authToken"); // 1 hour expiry
   const [machineData, setMachineData] = useState([]);
   const [userData, setUserData] = useState([]);
   const [interestData, setInterestData] = useState([]);
@@ -35,7 +35,7 @@ const Deposit = () => {
 
         setMachineData(response.data.user_machines);
         setUserData(response.data);
-       
+  
       } catch (error) {
         console.log(error);
       } finally {
@@ -48,7 +48,7 @@ const Deposit = () => {
         const getInterestUrl = `${HOST_URL}/user/getSingleUser+InterestEarned/${userId}`;
         const response = await axios.get(getInterestUrl);
         setInterestData(response.data);
-    
+     
       } catch (error) {
         console.log(error);
       }
@@ -89,7 +89,6 @@ const Deposit = () => {
 
     try {
       const response = await axios.post(postUrl, formData);
-   
 
       if (response.data) {
         setFlag((prev) => !prev);
@@ -110,11 +109,8 @@ const Deposit = () => {
 
   return (
     <>
-  
-
       <div className=" bg-[#161925]  p-6 space-y-8">
-      <MessageBox name="deposit" />
-      <BackButton />
+        <BackButton />
         {/* Loading Indicator */}
         {loading ? (
           <div className="flex justify-center items-center h-screen">
@@ -127,16 +123,20 @@ const Deposit = () => {
               <div className="bg-blue-500 text-white p-6 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-bold">Total Deposit</h2>
                 <p className="mt-4 text-lg">
-                ₹{userData.total_deposited_amount}
+                  ₹{userData.total_deposited_amount}
                 </p>
               </div>
               <div className="bg-green-500 text-white p-6 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-bold">Total Interest Earned</h2>
-                <p className="mt-4 text-lg">₹{userData.total_interest_earned}</p>
+                <p className="mt-4 text-lg">
+                  ₹{userData.total_interest_earned}
+                </p>
               </div>
               <div className="bg-yellow-500 text-white p-6 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-bold">Available to Withdraw</h2>
-                <p className="mt-4 text-lg">₹{userData.available_to_withdraw}</p>
+                <p className="mt-4 text-lg">
+                  ₹{userData.available_to_withdraw}
+                </p>
               </div>
             </div>
 
@@ -173,6 +173,9 @@ const Deposit = () => {
                           Machine ID
                         </th>
                         <th className="py-2 md:py-3 px-2 md:px-6 font-semibold">
+                          Machine Name
+                        </th>
+                        <th className="py-2 md:py-3 px-2 md:px-6 font-semibold">
                           Interest Amount
                         </th>
                         <th className="py-2 md:py-3 px-2 md:px-6 font-semibold">
@@ -181,28 +184,42 @@ const Deposit = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {interestData.map((row, index) => (
-                        <tr
-                          key={index}
-                          className={`border-t border-gray-200 ${
-                            index % 2 === 0 ? "bg-gray-100" : "bg-white"
-                          }`}
-                        >
-                          <td className="py-2 md:py-3 px-2 md:px-6 text-gray-700 text-xs md:text-sm">
-                            {row.machine_id}
-                          </td>
-                          <td className="py-2 md:py-3 px-2 md:px-6 text-gray-700 text-xs md:text-sm">
-                          ₹{row.amount}
-                          </td>
-                          <td className="py-2 md:py-3 px-2 md:px-6 text-gray-700 text-xs md:text-sm">
-                            {new Date(row.date).toLocaleDateString("en-IN", {
-                              year: "numeric",
-                              month: "short",
-                              day: "numeric",
-                            })}
+                      {interestData.length > 0 ? (
+                        interestData.map((row, index) => (
+                          <tr
+                            key={index}
+                            className={`border-t border-gray-200 ${
+                              index % 2 === 0 ? "bg-gray-100" : "bg-white"
+                            }`}
+                          >
+                            <td className="py-2 md:py-3 px-2 md:px-6 text-gray-700 text-xs md:text-sm">
+                              {row.machine_id}
+                            </td>
+                            <td className="py-2 md:py-3 px-2 md:px-6 text-gray-700 text-xs md:text-sm">
+                              {row.machine_name}
+                            </td>
+                            <td className="py-2 md:py-3 px-2 md:px-6 text-gray-700 text-xs md:text-sm">
+                              ₹{row.amount}
+                            </td>
+                            <td className="py-2 md:py-3 px-2 md:px-6 text-gray-700 text-xs md:text-sm">
+                              {new Date(row.date).toLocaleDateString("en-IN", {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                              })}
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan="4"
+                            className="py-4 text-center text-gray-500 text-sm"
+                          >
+                            No data available
                           </td>
                         </tr>
-                      ))}
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -220,7 +237,7 @@ const Deposit = () => {
                   <img
                     src={machine.machine.url} // Correcting the image property name
                     alt={machine.machine.machine_name}
-                     loading="lazy"
+                    loading="lazy"
                     className="  w-full h-40 object-contain rounded-t-lg"
                   />
                   <div className="p-4">
@@ -230,7 +247,7 @@ const Deposit = () => {
                     <p className="mt-2 text-gray-300">
                       Price:{" "}
                       <span className="text-white">
-                      ₹{machine.machine.price.toFixed(2)}
+                        ₹{machine.machine.price}
                       </span>
                     </p>
                     <p className="mt-2 text-gray-300">

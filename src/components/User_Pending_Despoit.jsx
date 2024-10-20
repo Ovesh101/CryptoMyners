@@ -25,7 +25,6 @@ const User_Pending_Deposit = () => {
       const user_pending_deposit_API = `${HOST_URL}/pending+request/getsingleuser+pendingmachine/${userId}`;
       try {
         const response = await axios.get(user_pending_deposit_API);
-     
 
         dispatch(addUserPendingDeposit(response.data));
       } catch (error) {
@@ -71,16 +70,25 @@ const User_Pending_Deposit = () => {
                 {machine.machine_name}
               </h3>
               <p className="text-lg text-gray-300 mb-1">
-                Price: <span className="text-green-400">${machine.price}</span>
+                Price: <span className="text-green-400">₹{machine.price}</span>
               </p>
               <p className="text-sm text-gray-400 mb-3">
                 Valid for{" "}
                 <span className="text-yellow-300">{machine.valid_days}</span>{" "}
                 days
               </p>
+              <p className="text-sm text-gray-400 mb-1">
+                Interest Per Day: ₹
+                {Math.round((machine.price * machine.interest_per_day) / 100)}
+              </p>
+              <p className="text-sm text-gray-400 mb-1">
+                Total Maturity Amount: ₹
+                {((machine.price * machine.interest_per_day) / 100) *
+                  machine.valid_days}
+              </p>
               <button
                 onClick={() => handleMachineClicked(machine.machine_id)}
-                className="bg-gradient-to-r from-yellow-400 to-yellow-500 w-full text-white font-semibold py-2 px-4 rounded hover:from-green-500 hover:to-green-600 transition"
+                className="bg-gradient-to-r from-yellow-400 to-yellow-500 w-full text-white font-semibold py-2 px-4 rounded transition"
               >
                 Waiting For Approval
               </button>

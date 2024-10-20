@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useLocalStorage from "../utils/hooks/useLocalStorage";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser, removeUser } from "../redux/features/UserSlice";
+import {  removeUser } from "../redux/features/UserSlice";
 import toast from "react-hot-toast";
 
 function Header() {

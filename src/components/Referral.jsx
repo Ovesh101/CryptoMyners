@@ -191,7 +191,7 @@ const Referral = () => {
                 ) : (
                   <tr>
                     <td colSpan={4} className="py-4 text-gray-400 text-center">
-                      No pending deposits available.
+                      No pending Referral available.
                     </td>
                   </tr>
                 )}

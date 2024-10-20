@@ -70,11 +70,9 @@ const Login = () => {
     last_name: !isSignIn
       ? Yup.string().required("Last Name is required")
       : null, // Only require 'name' for sign-up form
-    phone_number: Yup.string()
+      phone_number: Yup.string()
       .required("Phone Number is required")
-      .matches(/^[0-9]+$/, "Phone Number must be a number") // Regex to ensure it's a number
-      .min(10, "Phone Number must be at least 10 digits") // Minimum length check
-      .max(10, "Phone Number cannot exceed 10 digits"),
+      .matches(/^[0-9]{10}$/, "Phone Number must be exactly 10 digits"),
 
     terms: !isSignIn
       ? Yup.boolean()
@@ -90,7 +88,7 @@ const Login = () => {
 
     const { terms, ...formData } = values;
 
-    console.log("formdata", formData);
+
 
     // If user is signing up
     if (!isSignIn) {
@@ -108,8 +106,8 @@ const Login = () => {
             setShowText("Correct Referral");
 
             // Proceed with registration
-            const response = await axios.post(postUrl, formData);
-            console.log(response.data);
+             await axios.post(postUrl, formData);
+          
 
             setIsSignIn(true);
             toast.success("You have successfully registered");
@@ -124,7 +122,7 @@ const Login = () => {
             formData.invited_referral_code = null; // Remove the field
           }
 
-          const response = await axios.post(postUrl, formData);
+           await axios.post(postUrl, formData);
 
           setIsSignIn(true);
           toast.success("You have successfully registered");
@@ -137,11 +135,12 @@ const Login = () => {
       }
     } else {
       try {
-        console.log("hello");
+ 
 
         const phone = parseInt(values.phone_number);
+   
 
-        console.log("phone", phone);
+     
 
         const getUrl = `${HOST_URL}/user/getSingleUserByNumber/${phone}`;
 
@@ -150,7 +149,7 @@ const Login = () => {
 
         if (
           values.password === response.data.password &&
-          values.phone_number === response.data.phone_number
+          phone === response.data.phone_number
         ) {
           const user_id = response.data.user_id;
           dispatch(addUser(response.data));
@@ -281,9 +280,10 @@ const Login = () => {
 
                 <div className="mb-4">
                   <Field
-                    type="number"
+                    type="text"
                     name="phone_number"
-                    maxLength="10" 
+                    maxLength={10}
+                    pattern="[0-9]*" 
                     placeholder="Phone Number"
                     className="w-full p-3 rounded bg-[#271A84] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#271A84]"
                   />

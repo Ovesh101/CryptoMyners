@@ -5,7 +5,7 @@ import Section_2 from "./sections/Section_2";
 import { Section_3 } from "./sections/Section_3";
 import Section_4 from "./sections/Section_4";
 const LandingPage = () => {
-  const [userId, setUserId, removeUserId] = useLocalStorage("authToken");
+  const [userId] = useLocalStorage("authToken");
 
   const navigate = useNavigate();
 

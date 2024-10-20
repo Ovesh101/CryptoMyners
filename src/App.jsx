@@ -4,8 +4,8 @@ import Header from "./components/Header";
 import LandingPage from "./components/LandingPage";
 import Login from "./components/Login";
 import Footer from "./components/Footer";
-import { Provider, useDispatch } from "react-redux";
-import store from "./redux/store";
+import {  useDispatch } from "react-redux";
+
 import Machine_Listing from "./components/Machine_Listing";
 import Profile from "./components/Profile";
 import Layout from "./components/Layout";
@@ -29,9 +29,9 @@ import Create_Qrcode from "./components/Admin/Actions/Create_Qrcode";
 import View_Qrcode from "./components/Admin/Actions/View_Qrcode";
 import Create_Machine from "./components/Admin/Actions/Create_Machine";
 import View_Machine from "./components/Admin/Actions/View_Machine";
-import User_Pending_Despoit from "./components/User_Pending_Despoit";
+
 import User_Pending_Deposit from "./components/User_Pending_Despoit";
-import toast, { Toaster } from "react-hot-toast";
+import  { Toaster } from "react-hot-toast";
 import Video_Section from "./components/Video_Section";
 import NotFound from "./components/NotFound";
 import Privacy_Policy from "./components/Privacy_Policy";
@@ -40,7 +40,7 @@ import Terms from "./components/Terms";
 import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
-  const [userId, setUserId] = useLocalStorage("authToken"); // 1 hour expiry
+  const [userId] = useLocalStorage("authToken"); // 1 hour expiry
 
 
 
@@ -82,7 +82,7 @@ function App() {
       path: "/",
       element: (
         <>
-              <ScrollToTop /> 
+          <ScrollToTop /> 
           <Header />
           <Outlet /> {/* This renders the child routes */}
           <Footer />

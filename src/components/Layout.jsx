@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Sidebar from "./SideBar";
 import { HOST_URL } from "../utils/constant";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import useLocalStorage from "../utils/hooks/useLocalStorage";
 import { addUserPendingDeposit } from "../redux/features/UserSlice";
 import axios from "axios";
