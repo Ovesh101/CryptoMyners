@@ -5,15 +5,21 @@ import LoadingIcon from "./LoadingIcon";
 import MessageBox from "./MessageBox";
 import BackButton from "./BackButton";
 import { useNavigate } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 const WithDrawal = () => {
-  const [userId] = useLocalStorage("authToken"); // 1 hour expiry
+  const [userId] = useLocalStorage("authToken");
   const [pendingWithdrawals, setPendingWithdrawals] = useState([]);
   const [successWithdrawals, setSuccessWithdrawals] = useState([]);
   const [activeTab, setActiveTab] = useState("pending");
-  const [loading, setLoading] = useState(true); // Loading state
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
+  // Pagination state
+  const [currentPendingPage, setCurrentPendingPage] = useState(0);
+  const [currentSuccessPage, setCurrentSuccessPage] = useState(0);
+  const itemsPerPage = 5; // Adjust as needed
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getPendingUrl = `${HOST_URL}/user+withdrawal/getsingle+pending+withdrawals/${userId}`;
@@ -44,31 +50,40 @@ const WithDrawal = () => {
     if (!userId) {
       navigate("/login");
     } else {
-      // Start loading
       setLoading(true);
-
-      // Fetch data
-      Promise.all([
-        fetchPendingWithdrawals(),
-        fetchSuccessWithdrawals(),
-      ]).finally(() => setLoading(false)); // Stop loading after fetching
+      Promise.all([fetchPendingWithdrawals(), fetchSuccessWithdrawals()])
+        .finally(() => setLoading(false)); 
     }
   }, [userId]);
 
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <LoadingIcon /> {/* Show loading icon while loading */}
+        <LoadingIcon />
       </div>
     );
   }
 
+  // Handle pagination for pending withdrawals
+  const pendingPageCount = Math.ceil(pendingWithdrawals.length / itemsPerPage);
+  const displayedPendingWithdrawals = pendingWithdrawals.slice(
+    currentPendingPage * itemsPerPage,
+    (currentPendingPage + 1) * itemsPerPage
+  );
+
+  // Handle pagination for successful withdrawals
+  const successPageCount = Math.ceil(successWithdrawals.length / itemsPerPage);
+  const displayedSuccessWithdrawals = successWithdrawals.slice(
+    currentSuccessPage * itemsPerPage,
+    (currentSuccessPage + 1) * itemsPerPage
+  );
+
   return (
-    <section className="bg-[#161925]  p-6">
+    <section className="bg-[#161925] p-6">
       <MessageBox name="withdrawal" />
       <BackButton />
 
-      <div className="  mx-auto p-4  bg-gray-800 rounded-lg shadow-lg">
+      <div className="mx-auto p-4 bg-gray-800 rounded-lg shadow-lg">
         <h1 className="text-4xl font-bold mb-6 text-center text-white">
           Withdrawals
         </h1>
@@ -81,7 +96,10 @@ const WithDrawal = () => {
                 ? "bg-violet-600 text-white"
                 : "bg-white text-gray-800 hover:bg-gray-300"
             }`}
-            onClick={() => setActiveTab("pending")}
+            onClick={() => {
+              setActiveTab("pending");
+              setCurrentPendingPage(0); // Reset to first page
+            }}
           >
             Pending Withdrawals
           </button>
@@ -91,7 +109,10 @@ const WithDrawal = () => {
                 ? "bg-violet-600 text-white"
                 : "bg-white text-gray-800 hover:bg-gray-300"
             }`}
-            onClick={() => setActiveTab("success")}
+            onClick={() => {
+              setActiveTab("success");
+              setCurrentSuccessPage(0); // Reset to first page
+            }}
           >
             Successful Withdrawals
           </button>
@@ -103,7 +124,7 @@ const WithDrawal = () => {
             <h2 className="text-2xl font-semibold mb-4 text-white">
               Pending Withdrawals
             </h2>
-            <table className="min-w-full   bg-white shadow-md rounded-lg border border-gray-200">
+            <table className="min-w-full bg-white shadow-md rounded-lg border border-gray-200">
               <thead className="bg-violet-600 text-white">
                 <tr>
                   <th className="py-2 md:py-4 px-2 text-left font-semibold text-[10px] md:text-[16px] uppercase ">
@@ -118,8 +139,8 @@ const WithDrawal = () => {
                 </tr>
               </thead>
               <tbody>
-                {pendingWithdrawals.length > 0 ? (
-                  pendingWithdrawals.map((withdrawal) => (
+                {displayedPendingWithdrawals.length > 0 ? (
+                  displayedPendingWithdrawals.map((withdrawal) => (
                     <tr
                       key={withdrawal.id}
                       className="border-t border-gray-200 hover:bg-gray-100 transition-colors duration-300"
@@ -153,6 +174,26 @@ const WithDrawal = () => {
                 )}
               </tbody>
             </table>
+
+            {/* Pagination for Pending Withdrawals */}
+            {pendingPageCount > 1 && (
+              <ReactPaginate
+                previousLabel={"←"}
+                nextLabel={"→"}
+                breakLabel={"..."}
+                pageCount={pendingPageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={(data) => setCurrentPendingPage(data.selected)}
+                containerClassName={"flex justify-center mt-6"}
+                activeClassName={"bg-violet-600 text-white"}
+                pageClassName={"mx-1"}
+                previousClassName={"mx-1"}
+                nextClassName={"mx-1"}
+                className="pagination flex justify-center items-center space-x-2"
+                pageLinkClassName="text-white px-4 py-2 rounded transition"
+              />
+            )}
           </div>
         )}
 
@@ -162,7 +203,7 @@ const WithDrawal = () => {
             <h2 className="text-2xl font-semibold mb-4 text-white">
               Successful Withdrawals
             </h2>
-            <table className="min-w-full  bg-white shadow-md rounded-lg border border-gray-200">
+            <table className="min-w-full bg-white shadow-md rounded-lg border border-gray-200">
               <thead className="bg-violet-600 text-white">
                 <tr>
                   <th className="py-4 md:px-6 px-2 text-left font-semibold text-[8px] md:text-[16px] uppercase tracking-wide">
@@ -177,8 +218,8 @@ const WithDrawal = () => {
                 </tr>
               </thead>
               <tbody>
-                {successWithdrawals.length > 0 ? (
-                  successWithdrawals.map((withdrawal) => (
+                {displayedSuccessWithdrawals.length > 0 ? (
+                  displayedSuccessWithdrawals.map((withdrawal) => (
                     <tr
                       key={withdrawal.id}
                       className="border-t border-gray-200 hover:bg-gray-100 transition-colors duration-300"
@@ -192,10 +233,10 @@ const WithDrawal = () => {
                           day: "numeric",
                         })}
                       </td>
-                      <td className="py-2 md:py-3 px-2 md:px-6 text-gray-800 text-[10px] md:text-[16px] ">
+                      <td className="py-2 md:py-3 px-2 md:px-6 text-gray-800 text-[10px] md:text-[16px]">
                         ₹{withdrawal.withdrawal_amount}
                       </td>
-                      <td className="py-2 md:py-3 px-2 md:px-6 text-gray-800 text-[10px] md:text-[16px] ">
+                      <td className="py-2 md:py-3 px-2 md:px-6 text-gray-800 text-[10px] md:text-[16px]">
                         {withdrawal.is_success ? "Success" : "Pending"}
                       </td>
                     </tr>
@@ -212,6 +253,26 @@ const WithDrawal = () => {
                 )}
               </tbody>
             </table>
+
+            {/* Pagination for Successful Withdrawals */}
+            {successPageCount > 1 && (
+              <ReactPaginate
+                previousLabel={"←"}
+                nextLabel={"→"}
+                breakLabel={"..."}
+                pageCount={successPageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={(data) => setCurrentSuccessPage(data.selected)}
+                containerClassName={"flex justify-center mt-6"}
+                activeClassName={"bg-violet-600 text-white"}
+                pageClassName={"mx-1"}
+                previousClassName={"mx-1"}
+                nextClassName={"mx-1"}
+                className="pagination flex justify-center items-center space-x-2"
+                pageLinkClassName=" text-white px-4 py-2 rounded transition"
+              />
+            )}
           </div>
         )}
       </div>
