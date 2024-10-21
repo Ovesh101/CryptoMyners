@@ -48,6 +48,8 @@ const Deposit = () => {
         const getInterestUrl = `${HOST_URL}/user/getSingleUser+InterestEarned/${userId}`;
         const response = await axios.get(getInterestUrl);
         setInterestData(response.data);
+        console.log("interset" , response.data);
+        
      
       } catch (error) {
         console.log(error);
@@ -199,7 +201,7 @@ const Deposit = () => {
                               {row.machine_name}
                             </td>
                             <td className="py-2 md:py-3 px-2 md:px-6 text-gray-700 text-xs md:text-sm">
-                              ₹{row.amount}
+                              ₹{row.interest_amount}
                             </td>
                             <td className="py-2 md:py-3 px-2 md:px-6 text-gray-700 text-xs md:text-sm">
                               {new Date(row.date).toLocaleDateString("en-IN", {
