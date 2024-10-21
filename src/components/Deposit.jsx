@@ -9,6 +9,7 @@ import LoadingIcon from "./LoadingIcon"; // Import LoadingIcon component
 import toast from "react-hot-toast";
 
 import BackButton from "./BackButton";
+import ReactPaginate from "react-paginate";
 
 const Deposit = () => {
   const [userId] = useLocalStorage("authToken"); // 1 hour expiry
@@ -21,6 +22,8 @@ const Deposit = () => {
   const user_data = useSelector((store) => store.user.userInfo);
   const navigate = useNavigate();
   const [flag, setFlag] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10;
 
   const toggleTable = () => {
     setIsOpen(!isOpen);
@@ -35,7 +38,6 @@ const Deposit = () => {
 
         setMachineData(response.data.user_machines);
         setUserData(response.data);
-  
       } catch (error) {
         console.log(error);
       } finally {
@@ -48,9 +50,7 @@ const Deposit = () => {
         const getInterestUrl = `${HOST_URL}/user/getSingleUser+InterestEarned/${userId}`;
         const response = await axios.get(getInterestUrl);
         setInterestData(response.data);
-        console.log("interset" , response.data);
-        
-     
+        console.log("interset", response.data);
       } catch (error) {
         console.log(error);
       }
@@ -63,6 +63,16 @@ const Deposit = () => {
       fetchInterestData();
     }
   }, [flag]);
+
+  const pageCount = Math.ceil(interestData.length / itemsPerPage);
+  const currentItems = interestData.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
+
+  const handlePageChange = (selected) => {
+    setCurrentPage(selected.selected);
+  };
 
   const handleButtonClicked = () => {
     if (
@@ -152,7 +162,7 @@ const Deposit = () => {
             </div>
 
             {/* Second Section: Table */}
-            <div className="px-3   bg-gray-800 rounded-lg shadow-lg">
+            <div className="px-3 bg-gray-800 rounded-lg shadow-lg">
               <div className="flex flex-col md:flex-row mb-5 py-5 justify-between items-center">
                 <h1 className="text-2xl text-white font-bold mb-4 md:mb-0">
                   All Interest Earned
@@ -164,9 +174,9 @@ const Deposit = () => {
                   {isOpen ? "Close Table" : "Open Table"}
                 </button>
               </div>
+
               {isOpen && (
                 <div className="overflow-x-auto">
-                  {" "}
                   {/* Wrapper for horizontal scrolling */}
                   <table className="bg-white min-w-full shadow-lg rounded-lg">
                     <thead>
@@ -186,8 +196,8 @@ const Deposit = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {interestData.length > 0 ? (
-                        interestData.map((row, index) => (
+                      {currentItems.length > 0 ? (
+                        currentItems.map((row, index) => (
                           <tr
                             key={index}
                             className={`border-t border-gray-200 ${
@@ -224,6 +234,31 @@ const Deposit = () => {
                       )}
                     </tbody>
                   </table>
+
+                  {/* Pagination Logic */}
+                  {interestData.length > itemsPerPage && (
+                    <ReactPaginate
+                      previousLabel={"←"}
+                      nextLabel={"→"}
+                      breakLabel={"..."}
+                      pageCount={pageCount}
+                      pageRangeDisplayed={5}
+                      onPageChange={handlePageChange}
+                      containerClassName={"flex justify-center mt-6"}
+                      activeClassName={"bg-green-600 text-white"} // Active class for the current page
+                      pageClassName={({ selected }) =>
+                        `mx-1 ${
+                          selected
+                            ? "bg-green-600 text-white"
+                            : "bg-gray-700 hover:bg-gray-600 text-white"
+                        }`
+                      }
+                      previousClassName={"mx-1"}
+                      nextClassName={"mx-1"}
+                      className="pagination flex justify-center items-center space-x-2"
+                      pageLinkClassName="px-4 py-2 rounded transition"
+                    />
+                  )}
                 </div>
               )}
             </div>

@@ -5,6 +5,7 @@ import ReactPaginate from "react-paginate";
 
 import ModalEdit from "./ModalEdit";
 import BackButton from "../../BackButton";
+import toast from "react-hot-toast";
 
 const View_Machine = () => {
   const [machines, setMachines] = useState([]);
@@ -14,6 +15,7 @@ const View_Machine = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [itemsPerPage] = useState(10); // Items per page
+  const [flag , setFlag] = useState(false)
 
   useEffect(() => {
     const fetchMachines = async () => {
@@ -31,7 +33,7 @@ const View_Machine = () => {
     };
 
     fetchMachines();
-  }, [singleMachine]);
+  }, [singleMachine , flag]);
 
   if (loading) return <h1 className="text-center mt-10">Loading...</h1>;
   if (error) return <p className="text-red-500 text-center">{error}</p>;
@@ -52,9 +54,27 @@ const View_Machine = () => {
     setShowModal(true);
   };
 
-  const handleUpdate = (updateInfo) => {
- 
+  const handleUpdate = async (updateInfo) => {
+    console.log("Updated machine info:", updateInfo);
+  
+    try {
+      // Make the PUT or POST request to the API
+      const response = await axios.put(`${HOST_URL}/display+machine/updatemachine`, updateInfo);
+  
+      // Handle the response
+      if (response.status === 200) {
+        console.log("Update successful:", response.data);
+        toast.success("Machine updated successfully!");
+        setFlag(true)
+      } else {
+        toast.error("Failed to update the machine.");
+      }
+    } catch (error) {
+      console.error("Error updating the machine:", error);
+      toast.error("Error updating the machine. Please try again.");
+    }
   };
+  
 
   return (
     <div className="min-h-screen bg-[#161925] w-full ">

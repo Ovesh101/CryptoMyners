@@ -139,8 +139,8 @@ const Approved_Withdrawal = () => {
 
           {approved_withdrawal.length > itemsPerPage && (
             <ReactPaginate
-              previousLabel={"← Previous"}
-              nextLabel={"Next →"}
+              previousLabel={"← "}
+              nextLabel={" →"}
               breakLabel={"..."}
               breakClassName={"break-me"}
               pageCount={pageCount}
@@ -153,7 +153,7 @@ const Approved_Withdrawal = () => {
               previousClassName={"mx-1"}
               nextClassName={"mx-1"}
               className="pagination flex justify-center items-center space-x-2"
-              pageLinkClassName="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded transition"
+              pageLinkClassName=" text-white px-4 py-2 rounded transition"
             />
           )}
         </>

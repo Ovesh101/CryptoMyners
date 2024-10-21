@@ -13,7 +13,7 @@ import Loading from "./Loading";
 import useLocalStorage from "../utils/hooks/useLocalStorage";
 
 const BuyMachine = () => {
-  const [userId, setUserId] = useLocalStorage("authToken"); 
+  const [userId, setUserId] = useLocalStorage("authToken");
   const [machineData, setMachineData] = useState({});
   const [qrData, setQRData] = useState({});
   const [utr, setUtr] = useState("");
@@ -21,44 +21,36 @@ const BuyMachine = () => {
   const [loading, setLoading] = useState(true); // Loading state
   const [copySuccess, setCopySuccess] = useState(false);
   const [upiData, setUpiData] = useState({
-    upiID: "",      // UPI ID
-    payeeName: "",  // Payee name
-    amount: "",     // Amount
-    currency: "INR" // Currency (INR by default)
+    upiID: "", // UPI ID
+    payeeName: "", // Payee name
+    amount: "", // Amount
+    currency: "INR", // Currency (INR by default)
   });
 
-
   // Construct the UPI payment link
-  
-
 
   const navigate = useNavigate();
   const { machine_id } = useParams();
   const user = useSelector((state) => state.user.userInfo);
- 
- 
 
   // Fetch machine data and QR code data
   useEffect(() => {
-
     const fetchData = async () => {
-     
       try {
         const machineResponse = await axios.get(
           `${HOST_URL}/display+machine/get+single+display+machine/${machine_id}`
         );
         setMachineData(machineResponse.data);
-   
 
         const qrResponse = await axios.get(
           `${HOST_URL}/qrcode/getactive+qrcode`
         );
         setQRData(qrResponse.data);
         setUpiData({
-          upiID: qrResponse.data.upi_id,       // Example: "shabanamulla6901@okicici"
+          upiID: qrResponse.data.upi_id, // Example: "shabanamulla6901@okicici"
           payeeName: "", // Example: "Shabana Mulla"
-          amount: machineResponse.data.price,     // Example: "500"
-          currency: "INR"          // Assume currency is INR
+          amount: machineResponse.data.price, // Example: "500"
+          currency: "INR", // Assume currency is INR
         });
       } catch (error) {
         console.error("Error fetching data", error);
@@ -67,19 +59,15 @@ const BuyMachine = () => {
         setLoading(false); // Stop loading
       }
     };
-    
+
     if (!userId) {
       navigate("/login");
     } else {
       fetchData();
-     
-    
     }
   }, []);
 
   const upiLink = `upi://pay?pa=${upiData.upiID}&pn=${upiData.payeeName}&am=${upiData.amount}&cu=${upiData.currency}`;
-
-  
 
   if (!user || !machineData || !qrData) {
     return <Loading />; // Render a loading state if data is not yet available
@@ -102,7 +90,6 @@ const BuyMachine = () => {
       .writeText(formData.upi_id)
       .then(() => {
         setCopySuccess(true);
-      
 
         setTimeout(() => setCopySuccess(false), 2000); // Hide after 2 seconds
       })
@@ -131,7 +118,6 @@ const BuyMachine = () => {
 
         // Combine both pending and success deposits into a single list
         const allDeposits = [...pendingResponse.data, ...successResponse.data];
-
 
         // Convert checkutr to an integer (UTR number to check)
         const utrnum = parseInt(checkutr, 10);
@@ -171,7 +157,6 @@ const BuyMachine = () => {
       const savetoPendingUrl = `${HOST_URL}/pending+request/submit+request`;
       await axios.post(savetoPendingUrl, formData);
       toast.success("Successfully Purchased Machine, Wait for Admin Approval"); // Success toast
-   
     } catch (error) {
       console.error("Error occurred during submitting UTR:", error);
       toast.error("Error occurred while submitting UTR."); // Show error toast
@@ -179,7 +164,6 @@ const BuyMachine = () => {
       setLoading(false); // Stop loading
     }
   };
-
 
   return (
     <>
@@ -225,12 +209,24 @@ const BuyMachine = () => {
                     {machineData.price}
                   </p>
                   <p className="text-gray-600 mb-2">
-                    <span className="font-semibold">Description:</span>{" "}
-                    {machineData.description}
+                    <span className="font-semibold">Valid Days:</span>
+                    {machineData.valid_days}
+                  </p>
+                  <p className=" text-gray-600 mb-1">
+                    Interest Per Day: ₹
+                    {Math.round(
+                      (machineData.price * machineData.interest_per_day) / 100
+                    )}
+                  </p>
+                  <p className=" text-gray-600 mb-1">
+                    Total Maturity Amount: ₹
+                    {((machineData.price * machineData.interest_per_day) /
+                      100) *
+                      machineData.valid_days}
                   </p>
                   <p className="text-gray-600 mb-4">
                     <span className="font-semibold">Purchased by:</span>{" "}
-                    {user.first_name}
+                    {user.first_name }
                   </p>
                 </div>
 
@@ -298,7 +294,7 @@ const BuyMachine = () => {
                     id="confirmUtr"
                     name="confirmUtr"
                     value={confirmUtr}
-                 maxLength={12}
+                    maxLength={12}
                     onChange={(e) => setConfirmUtr(e.target.value)}
                     className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Re-enter UTR"

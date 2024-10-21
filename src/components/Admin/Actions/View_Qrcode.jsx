@@ -4,6 +4,7 @@ import { HOST_URL } from "../../../utils/constant";
 import ReactPaginate from "react-paginate";
 import ModalEdit from "./ModalEdit";
 import BackButton from "../../BackButton";
+import toast from "react-hot-toast";
 
 const View_Qrcode = () => {
   const [qrCodes, setQrCodes] = useState([]);
@@ -13,6 +14,7 @@ const View_Qrcode = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(10); // Items per page
   const [showModal  , setShowModal] = useState(false);
+  const [flag , setFlag]  =  useState(false);
 
   useEffect(() => {
     const fetchQRCodes = async () => {
@@ -28,7 +30,7 @@ const View_Qrcode = () => {
     };
 
     fetchQRCodes();
-  }, [singleQrcode]);
+  }, [singleQrcode , flag]);
 
   if (loading) return <h1 className="text-center mt-10">Loading...</h1>;
   if (error) return <p className="text-red-500 text-center">{error}</p>;
@@ -63,10 +65,38 @@ const View_Qrcode = () => {
     // Implement navigation to edit page or modal logic here
   };
 
-  const handleUpdate = (updateInfo)=>{
-   
-    
-  }
+  const handleUpdate = async (updateInfo) => {
+    // Extract the id from updateInfo if it exists
+    const { qrcode_id } = updateInfo;
+  
+    if (!qrcode_id) {
+      console.error("ID is missing in updateInfo.");
+      return;
+    }
+  
+    console.log("QR Code info being updated:", updateInfo);
+  
+    try {
+      // Make the PUT or POST request to the API with the id in the URL
+      const response = await axios.put(
+        `${HOST_URL}/qrcode/update+qrcode/${qrcode_id}`, // The endpoint with the ID
+        updateInfo // The updated QR code data (request payload)
+      );
+  
+      // Handle the response
+      if (response.status === 200) {
+        console.log("QR Code updated successfully:", response.data);
+        toast.success("QR Code updated successfully!");
+        setFlag(true)
+      } else {
+        toast.error("Failed to update the QR Code.");
+      }
+    } catch (error) {
+      console.error("Error updating the QR Code:", error);
+      toast.error("Error updating the QR Code. Please try again.");
+    }
+  };
+  
 
   return (
     <div className="min-h-screen bg-[#161925] w-full ">

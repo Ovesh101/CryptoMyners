@@ -72,6 +72,36 @@ const Pending_Deposit = () => {
     }
   };
 
+  const handleDelete = async (item) => {
+
+    console.log(item);
+    
+    // Optional: Confirm the delete action
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete the record with ID ${item.id}?`
+    );
+  
+    if (confirmDelete) {
+      try {
+        const response = await axios.delete(
+          `${HOST_URL}/pending+request/delete+pending+request/${item.id}`
+        );
+        setFlag(true)
+
+        console.log(response.data);
+        
+  
+        if (response) {
+          toast.success("Record Deleted Successfully")
+        }
+      } catch (error) {
+        console.error('Error deleting the record:', error);
+        toast.error("Failed to delete the record. Please try again.")
+      }
+    }
+  };
+  
+
   return (
     <div className="p-6  bg-[#1E1E2E]">
       <h2 className="text-3xl text-white font-semibold mb-8 text-center">
@@ -104,7 +134,7 @@ const Pending_Deposit = () => {
                   <th className="py-3 px-4 border-b border-gray-600">
                     Machine Price
                   </th>
-                  <th className="py-3 px-4 border-b border-gray-600">
+                  <th className="py-3 col-span-2 px-4 border-b border-gray-600">
                     Actions
                   </th>
                 </tr>
@@ -141,12 +171,13 @@ const Pending_Deposit = () => {
                       <td className="py-4 px-4 border-b border-gray-600">
                         ₹{item.machine_price}
                       </td>
-                      <td
-                        onClick={() => handleApprove(item)}
-                        className=" bg-green-500 cursor-pointer rounded transition duration-300 text-center text-xs"
-                      >
-                        Approve
-                        
+                      <td className="py-3 px-4 text-center">
+                        <button onClick={()=>handleApprove(item)} className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600">
+                          Approve
+                        </button>
+                        <button onClick={()=>handleDelete(item)} className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 ml-2">
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))
@@ -166,8 +197,8 @@ const Pending_Deposit = () => {
 
           {pending_deposit.length > itemsPerPage && (
             <ReactPaginate
-              previousLabel={"← Previous"}
-              nextLabel={"Next →"}
+              previousLabel={"← "}
+              nextLabel={" →"}
               breakLabel={"..."}
               breakClassName={"break-me"}
               pageCount={pageCount}
@@ -180,7 +211,7 @@ const Pending_Deposit = () => {
               previousClassName={"mx-1"}
               nextClassName={"mx-1"}
               className="pagination flex justify-center items-center space-x-2"
-              pageLinkClassName="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded transition"
+              pageLinkClassName=" text-white px-4 py-2 rounded transition"
             />
           )}
         </>

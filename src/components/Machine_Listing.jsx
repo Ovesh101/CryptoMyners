@@ -70,14 +70,14 @@ const MachineListing = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {machines.map((machine) => (
           <div
-            className="bg-gray-800 p-6 rounded-lg shadow-md"
+            className="bg-gray-800 p-3 rounded-lg shadow-md"
             key={machine.machine_id}
           >
             <img
               src={machine.url}
               loading="lazy"
               alt={machine.machine_name}
-              className="w-full h-40 object-contain rounded-md mb-4"
+              className=" w-full object-cover rounded-md mb-4"
             />
             <h3 className="text-2xl font-bold text-white mb-2">
               {machine.machine_name}

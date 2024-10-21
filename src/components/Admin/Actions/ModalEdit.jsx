@@ -92,15 +92,7 @@ const ModalEdit = ({ showModal, setShowModal, type, data, handleUpdate }) => {
                   className="w-full border px-2 py-1 rounded"
                 />
               </div>
-              <div className="mb-4">
-                <label className="block mb-2">Description</label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  className="w-full border px-2 py-1 rounded"
-                />
-              </div>
+ 
             </>
           )}
 
@@ -147,23 +139,7 @@ const ModalEdit = ({ showModal, setShowModal, type, data, handleUpdate }) => {
                   className="w-full border px-2 py-1 rounded"
                 />
               </div>
-              <div className="mb-4">
-                <label className="block mb-2">Is Active</label>
-                <select
-                  name="isactive"
-                  value={formData.isactive === true ? "true" : "false"}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      isactive: e.target.value === "true",
-                    })
-                  }
-                  className="w-full border px-2 py-1 rounded"
-                >
-                  <option value="true">Yes</option>
-                  <option value="false">No</option>
-                </select>
-              </div>
+
             </>
           )}
 

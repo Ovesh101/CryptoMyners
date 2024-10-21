@@ -14,6 +14,7 @@ const WithDrawal = () => {
   const [loading, setLoading] = useState(true); // Loading state
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const getPendingUrl = `${HOST_URL}/user+withdrawal/getsingle+pending+withdrawals/${userId}`;
     const getSuccessUrl = `${HOST_URL}/user+withdrawal/getsingle+success+withdrawals/${userId}`;

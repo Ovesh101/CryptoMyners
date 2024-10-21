@@ -44,6 +44,8 @@
   gap: 10px; /* Adjust the spacing between the icons */
 }
 
+
+
 .pagination {
   display: flex;
   list-style: none;
@@ -58,19 +60,22 @@
 .pagination a {
   display: block;
   padding: 8px 12px;
-  background: #3B82F6;
   color: white;
   border-radius: 4px;
+  transition: background 0.3s; /* Smooth transition for hover effect */
 }
 
-.pagination a:hover {
-  background: #2563EB; 
-}
-.swiper-pagination{
-  margin-top: 10000px;
+
+
+/* Style for the active page */
+.pagination li.active a {
+  background: #4CAF50; /* Green background for the active page */
+  pointer-events: none; /* Prevent interaction with the active page link */
+  color: white; /* Ensure text color is white */
 }
 
-.active a {
-  background: #2563EB;
-  pointer-events: none;
+/* Optionally, you can remove the margin for Swiper pagination if it is not needed */
+.swiper-pagination {
+  margin-top: 0; /* Adjust margin as needed */
 }
+
