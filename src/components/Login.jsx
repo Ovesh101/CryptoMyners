@@ -70,9 +70,12 @@ const Login = () => {
     last_name: !isSignIn
       ? Yup.string().required("Last Name is required")
       : null, // Only require 'name' for sign-up form
-      phone_number: Yup.string()
+    phone_number: Yup.string()
       .required("Phone Number is required")
-      .matches(/^[0-9]{10}$/, "Phone Number must be exactly 10 digits"),
+      .matches(
+        /^[0-9]{10}$/,
+        "Phone Number must be exactly 10 digits and contain only numbers"
+      ),
 
     terms: !isSignIn
       ? Yup.boolean()
@@ -87,8 +90,6 @@ const Login = () => {
     setSubmitting(true);
 
     const { terms, ...formData } = values;
-
-
 
     // If user is signing up
     if (!isSignIn) {
@@ -106,8 +107,7 @@ const Login = () => {
             setShowText("Correct Referral");
 
             // Proceed with registration
-             await axios.post(postUrl, formData);
-          
+            await axios.post(postUrl, formData);
 
             setIsSignIn(true);
             toast.success("You have successfully registered");
@@ -122,7 +122,7 @@ const Login = () => {
             formData.invited_referral_code = null; // Remove the field
           }
 
-           await axios.post(postUrl, formData);
+          await axios.post(postUrl, formData);
 
           setIsSignIn(true);
           toast.success("You have successfully registered");
@@ -135,17 +135,15 @@ const Login = () => {
       }
     } else {
       try {
- 
-
         const phone = parseInt(values.phone_number);
-   
-
-     
 
         const getUrl = `${HOST_URL}/user/getSingleUserByNumber/${phone}`;
+     
+        
 
         // Send GET request to fetch user data by phone number
         const response = await axios.get(getUrl);
+    
 
         if (
           values.password === response.data.password &&
@@ -167,7 +165,7 @@ const Login = () => {
         console.error("Error logging in:", error);
         // Handle error, e.g., display an error message
         // Example: toast.error("Login failed!");
-        toast.error("Login Failed");
+        toast.error("Credentials Incorrect");
       } finally {
         setSubmitting(false); // Ensure to stop submitting after request
       }
@@ -283,7 +281,7 @@ const Login = () => {
                     type="text"
                     name="phone_number"
                     maxLength={10}
-                    pattern="[0-9]*" 
+                    pattern="[0-9]*"
                     placeholder="Phone Number"
                     className="w-full p-3 rounded bg-[#271A84] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#271A84]"
                   />
