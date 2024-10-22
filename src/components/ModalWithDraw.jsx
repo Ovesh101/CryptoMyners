@@ -37,6 +37,7 @@ const Modal = ({ isOpen, onClose, onWithdraw, initialAmount }) => {
         <div className="absolute inset-0 bg-black opacity-50" onClick={onClose} />
         <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full z-10">
           <h2 className="text-xl font-bold mb-4 text-center">Withdrawal Confirmation</h2>
+          <p className="text-red-500 text-[14px] mt-2">*10% Platform Fees Will Be Deducted on Withdrawal Amount</p>
           <p className="text-gray-700 mb-4">Available to Withdraw: <span className="font-semibold">₹{initialAmount}</span></p>
           <input
             type="number"

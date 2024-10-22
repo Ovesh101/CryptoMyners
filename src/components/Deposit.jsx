@@ -50,7 +50,7 @@ const Deposit = () => {
         const getInterestUrl = `${HOST_URL}/user/getSingleUser+InterestEarned/${userId}`;
         const response = await axios.get(getInterestUrl);
         setInterestData(response.data);
-        console.log("interset", response.data);
+      
       } catch (error) {
         console.log(error);
       }
@@ -94,11 +94,15 @@ const Deposit = () => {
 
     const formData = {
       user_id: userId,
-      withdrawal_amount: amount,
+      withdrawal_amount: amount - (amount * 0.10), // Cutting 10% from the original amount
       type: "INTEREST",
       is_success: false,
     };
 
+    console.log("formdata" , formData);
+    
+
+  
     try {
       const response = await axios.post(postUrl, formData);
 

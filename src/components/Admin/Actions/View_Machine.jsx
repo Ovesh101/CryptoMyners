@@ -113,7 +113,7 @@ const View_Machine = () => {
                   {machine.machine_name}
                 </td>
                 <td className="py-3 px-4 border-b border-gray-300">
-                  ${machine.price.toFixed(2)}
+                ₹{machine.price.toFixed(2)}
                 </td>
                 <td className="py-3 px-4 border-b border-gray-300">
                   {machine.valid_days}

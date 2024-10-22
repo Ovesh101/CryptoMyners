@@ -107,6 +107,7 @@ const Create_Machine = () => {
               name="interest_per_day"
               value={formData.interest_per_day}
               onChange={handleChange}
+              required
               className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
               placeholder="Enter Interest Per Day"
             />

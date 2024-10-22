@@ -94,8 +94,8 @@ const MachineListing = () => {
             </p>
             <p className="text-sm text-gray-400 mb-1">
               Total Maturity Amount: ₹
-              {((machine.price * machine.interest_per_day) / 100) *
-                machine.valid_days}
+              {Math.round(((machine.price * machine.interest_per_day) / 100) *
+                machine.valid_days)}
             </p>
             <button
               onClick={() => handleMachineClicked(machine.machine_id)}

@@ -43,7 +43,7 @@ const Referral = () => {
         `${HOST_URL}/user+withdrawal/save+pending+request`,
         {
           user_id: userId,
-          withdrawal_amount: amount,
+          withdrawal_amount: amount - (amount * 0.10), // Cutting 10% from the original amount
           is_success: false,
           type: "REFERRAL",
         }
