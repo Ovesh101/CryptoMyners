@@ -101,7 +101,7 @@ const MachineListing = () => {
               onClick={() => handleMachineClicked(machine.machine_id)}
               className="bg-green-500 mt-3 w-full text-white font-semibold py-2 px-4 rounded hover:bg-green-600 transition"
             >
-              Start Machine
+              Start Mining
             </button>
           </div>
         ))}
