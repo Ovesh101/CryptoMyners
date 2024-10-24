@@ -55,6 +55,10 @@ const Footer = () => {
             <li>
               <Link to="/Privacy_Policy"s>Privacy Policy</Link>
             </li>
+            <li>
+            <a href="https://www.youtube.com/@cryptomyners" target="_blank" rel="noopener noreferrer">YouTube Channel</a>
+
+            </li>
           </ul>
         </div>
 

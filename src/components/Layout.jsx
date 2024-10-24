@@ -38,7 +38,7 @@ const Layout = ({ children }) => {
     <main className="relative ">
       <div className="flex">
         <Sidebar /> {/* Sidebar Component */}
-        <section className="flex  w-full bg-[#161925]  flex-1 flex-col px-4  lg:pt-10 pt-5  max-md:pb-14  md:px-14">
+        <section className="flex  w-full bg-[#161925]  flex-1 flex-col px-4 py-10  lg:pt-10 pt-5  max-md:pb-14  md:px-14">
           <div className="w-full">
             {/* Render dynamic children (like MachineListing or other content) */}
             {children}

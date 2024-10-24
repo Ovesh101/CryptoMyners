@@ -50,7 +50,6 @@ const Deposit = () => {
         const getInterestUrl = `${HOST_URL}/user/getSingleUser+InterestEarned/${userId}`;
         const response = await axios.get(getInterestUrl);
         setInterestData(response.data);
-      
       } catch (error) {
         console.log(error);
       }
@@ -94,15 +93,13 @@ const Deposit = () => {
 
     const formData = {
       user_id: userId,
-      withdrawal_amount: amount - (amount * 0.10), // Cutting 10% from the original amount
+      withdrawal_amount: amount - amount * 0.1, // Cutting 10% from the original amount
       type: "INTEREST",
       is_success: false,
     };
 
-    console.log("formdata" , formData);
-    
+    console.log("formdata", formData);
 
-  
     try {
       const response = await axios.post(postUrl, formData);
 
@@ -307,6 +304,20 @@ const Deposit = () => {
                       End Date:{" "}
                       <span className="text-white">
                         {machine.machine.end_date}
+                      </span>
+                    </p>
+                    <p className="mt-2 text-gray-300">
+                      Status:{" "}
+                      <span
+                        className={` ${
+                          new Date(machine.machine.end_date) > new Date()
+                            ? "text-green-500"
+                            : "text-red-500"
+                        }`}
+                      >
+                        {new Date(machine.machine.end_date) > new Date()
+                          ? "Active"
+                          : "Expired"}
                       </span>
                     </p>
                   </div>

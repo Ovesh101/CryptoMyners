@@ -67,7 +67,7 @@ const MachineListing = () => {
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 py-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {machines.map((machine) => (
           <div
             className="bg-gray-800 p-3 rounded-lg shadow-md"
