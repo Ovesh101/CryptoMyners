@@ -36,35 +36,36 @@ const Referral = () => {
       toast.error("Please Enter Your Bank Information from Profile Section");
     }
   };
-
+  
   const handleWithdraw = async (amount) => {
     try {
       const response = await axios.post(
         `${HOST_URL}/user+withdrawal/save+pending+request`,
         {
           user_id: userId,
-          withdrawal_amount: amount - (amount * 0.10), // Cutting 10% from the original amount
+          withdrawal_amount: amount - amount * 0.10, // Cutting 10% from the original amount
           is_success: false,
           type: "REFERRAL",
         }
       );
-      alert(
-        response.data
-          ? toast.success(`Withdrawal of ${amount} initiated successfully!`)
-          : toast.error("Error in processing your withdrawal request.")
-      );
-      setFlag(true);
+  
+      if (response.data) {
+        toast.success(`Withdrawal of ${amount} initiated successfully!`);
+      } else {
+        toast.error("Error in processing your withdrawal request.");
+      }
+      
+      setFlag(true); // Set flag to true if request was successful
     } catch (error) {
       console.error("Error during withdrawal:", error);
-      alert(
-        toast.error(
-          "An error occurred while processing your withdrawal. Please try again later."
-        )
+      toast.error(
+        "An error occurred while processing your withdrawal. Please try again later."
       );
     } finally {
-      setIsModalOpen(false);
+      setIsModalOpen(false); // Close the modal in the finally block
     }
   };
+  
 
   useEffect(() => {
     const fetchData = async () => {

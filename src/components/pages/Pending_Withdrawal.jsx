@@ -16,14 +16,19 @@ const Pending_Withdrawal = () => {
   const pending_withdrawal = useSelector(
     (state) => state.admin.admin.pending_withdrawal || []
   );
+
+  
+  
   const [currentPage, setCurrentPage] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [item, setItem] = useState({});
   const [loading, setLoading] = useState(true);
   const [userId] = useLocalStorage("authToken"); // 1 day expiry
   const navigate = useNavigate();
+  const [user , setUser] = useState(null)
 
   const itemsPerPage = 10;
+
 
   useEffect(() => {
     const fetchPendingWithdrawals = async () => {
@@ -32,6 +37,9 @@ const Pending_Withdrawal = () => {
         const response = await axios.get(
           `${HOST_URL}/user+withdrawal/getAll+pending+request`
         );
+
+        console.log(response.data);
+        
         dispatch(addPendingWithdrawal(response.data));
       } catch (error) {
         console.error("Error fetching pending withdrawals:", error);
@@ -40,9 +48,11 @@ const Pending_Withdrawal = () => {
       }
     };
 
+
     if (!userId) {
       navigate("/login");
     } else {
+     
       fetchPendingWithdrawals();
     }
   }, [userId, dispatch, navigate]);

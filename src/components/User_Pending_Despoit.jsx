@@ -57,13 +57,13 @@ const User_Pending_Deposit = () => {
         <div className="grid mt-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {user_pending_deposit.map((machine) => (
             <div
-              className="bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105"
+              className="bg-gray-800 p-4 rounded-lg shadow-lg transition-transform transform hover:scale-105"
               key={machine.machine_id}
             >
               <img
                 src={machine.url}
                 alt={machine.machine_name}
-                className="w-full h-40 object-contain rounded-md mb-4"
+                className="w-full h-40 object-cover rounded-md mb-4"
                 loading="lazy"
               />
               <h3 className="text-2xl font-bold mb-2">

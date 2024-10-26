@@ -31,7 +31,6 @@ const Profile = () => {
       try {
         const response = await axios.get(userApiUrl);
 
-
         setUser(response.data); // Populate user data
         setLoading(false);
       } catch (err) {
@@ -48,19 +47,19 @@ const Profile = () => {
   }, []);
 
   const handleUpdate = async (updatedData) => {
-
-
+      console.log("user" , user.user_id);
+      
+    
     const patchUrl = `${HOST_URL}/user/update+basicdata/${user.user_id}`; // Using user_id from the user object
     try {
       const response = await axios.patch(patchUrl, updatedData);
+
+      console.log(response.data);
       
 
       // Optionally, update the local user state with the new data after successful update
       setUser(response.data);
       dispatch(updateUserInfo(response.data));
-      
-
-    
 
       // Provide success feedback to the user
 
@@ -70,10 +69,10 @@ const Profile = () => {
       // Close the modal
       setShowModal(false);
     } catch (error) {
-      console.error("Error updating user data:", error);
-
-      toast.error("Failed to update profile. Please try again.");
+      console.error("Error response:", error.response);
+      toast.error(error.response?.data?.message || "Failed to update profile. Please try again.");
     }
+    
   };
 
   const handleCopy = () => {
