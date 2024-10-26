@@ -70,12 +70,13 @@ const Login = () => {
     last_name: !isSignIn
       ? Yup.string().required("Last Name is required")
       : null, // Only require 'name' for sign-up form
-    phone_number: Yup.string()
+      phone_number: Yup.string()
       .required("Phone Number is required")
-      .matches(
-        /^[0-9]{10}$/,
-        "Phone Number must be exactly 10 digits and contain only numbers"
-      ),
+      .test('not-start-with-zero', 'Phone Number cannot start with 0', value => {
+        // Check if the value exists and doesn't start with '0'
+        return value && !value.startsWith('0');
+      })
+      .matches(/^[1-9][0-9]{9}$/, "Phone Number must be exactly 10 digits and contain only numbers"),
 
     terms: !isSignIn
       ? Yup.boolean()
@@ -116,8 +117,6 @@ const Login = () => {
             toast.error("Please enter a correct referral code.");
           }
         } else {
-          // If no referral code is provided, proceed with registration directly
-
           if (!formData.invited_referral_code) {
             formData.invited_referral_code = null; // Remove the field
           }
@@ -138,12 +137,9 @@ const Login = () => {
         const phone = parseInt(values.phone_number);
 
         const getUrl = `${HOST_URL}/user/getSingleUserByNumber/${phone}`;
-     
-        
 
         // Send GET request to fetch user data by phone number
         const response = await axios.get(getUrl);
-    
 
         if (
           values.password === response.data.password &&
@@ -277,18 +273,26 @@ const Login = () => {
                 )}
 
                 <div className="mb-4">
-                  <Field
-                    type="text"
-                    name="phone_number"
-                    maxLength={10}
-                    pattern="[0-9]*"
-                    placeholder="Phone Number"
-                    className="w-full p-3 rounded bg-[#271A84] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#271A84]"
-                  />
+                  <div className="flex items-center bg-[#271A84] rounded">
+                    {/* +91 Text */}
+                    <span className="text-gray-400 pl-2">+91</span>
+
+                    {/* Phone Number Input */}
+                    <Field
+                      type="text"
+                      name="phone_number"
+                      maxLength={10}
+                      pattern="[0-9]*"
+                      placeholder="Phone Number"
+                      className="w-full p-3 bg-[#271A84] text-white placeholder-gray-400 focus:outline-none  focus:ring-[#271A84] rounded-r"
+                    />
+                  </div>
+
+                  {/* Error Message */}
                   <ErrorMessage
                     name="phone_number"
                     component="div"
-                    className="text-red-500 text-sm"
+                    className="text-red-500 text-sm mt-1"
                   />
                 </div>
 

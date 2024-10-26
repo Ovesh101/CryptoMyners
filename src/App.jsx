@@ -203,6 +203,7 @@ function App() {
           path: "/terms",
           element: <Terms />,
         },
+        
 
         {
           path: "*",

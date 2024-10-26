@@ -68,11 +68,9 @@ export const partners = [
     { label: 'Machines', route: '/machine_listing', imgUrl: '/Images/icons/machine.svg' , role:'USER' },
     { label: 'Tutorials', route: '/video_section', imgUrl: '/Images/icons/video.svg' , role:'USER' },
     { label: 'Transaction', route: '/transaction', imgUrl: '/Images/icons/deposit.svg' , role:'USER' },
-
     { label: 'Profile', route: '/profile', imgUrl: '/Images/icons/profile.svg' , role:'USER' },
-    // { label: 'Deposit', route: '/deposit', imgUrl: '/Images/icons/deposit.svg' , role:'USER' },
-    // { label: 'Withdrawal', route: '/withdrawal', imgUrl: '/Images/icons/with.svg' , role:'USER' },
-    // { label: 'Referral', route: '/referral', imgUrl: '/Images/icons/refer.svg' , role:'USER' },
+    // { label: 'Games', route: '/game', imgUrl: '/Images/icons/deposit.svg' , role:'USER' },
+
 
     { label: 'Admin', route: '/admin', imgUrl: '/Images/icons/admin.svg', role: 'CARTEL' }, // Role-based link
 ];
