@@ -17,18 +17,15 @@ const Pending_Withdrawal = () => {
     (state) => state.admin.admin.pending_withdrawal || []
   );
 
-  
-  
   const [currentPage, setCurrentPage] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [item, setItem] = useState({});
   const [loading, setLoading] = useState(true);
   const [userId] = useLocalStorage("authToken"); // 1 day expiry
   const navigate = useNavigate();
-  const [user , setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
   const itemsPerPage = 10;
-
 
   useEffect(() => {
     const fetchPendingWithdrawals = async () => {
@@ -39,7 +36,7 @@ const Pending_Withdrawal = () => {
         );
 
         console.log(response.data);
-        
+
         dispatch(addPendingWithdrawal(response.data));
       } catch (error) {
         console.error("Error fetching pending withdrawals:", error);
@@ -48,11 +45,9 @@ const Pending_Withdrawal = () => {
       }
     };
 
-
     if (!userId) {
       navigate("/login");
     } else {
-     
       fetchPendingWithdrawals();
     }
   }, [userId, dispatch, navigate]);
@@ -80,12 +75,12 @@ const Pending_Withdrawal = () => {
         item
       );
       if (response) {
-        toast.success("Withdrawal approved successfully")
+        toast.success("Withdrawal approved successfully");
         setShowModal(false);
         setLoading(false);
       }
     } catch (error) {
-      toast.error("Error approving withdrawal:")
+      toast.error("Error approving withdrawal:");
       setLoading(false);
     }
   };
@@ -108,7 +103,9 @@ const Pending_Withdrawal = () => {
               <thead>
                 <tr className="bg-gradient-to-r from-purple-500 to-blue-500">
                   <th className="py-3 px-4 border-b border-gray-600">ID</th>
-                  <th className="py-3 px-4 border-b border-gray-600">User ID</th>
+                  <th className="py-3 px-4 border-b border-gray-600">
+                    User ID
+                  </th>
                   <th className="py-3 px-4 border-b border-gray-600">
                     Withdrawal Amount
                   </th>
@@ -116,7 +113,9 @@ const Pending_Withdrawal = () => {
                   <th className="py-3 px-4 border-b border-gray-600">
                     Withdrawal Date
                   </th>
-                  <th className="py-3 px-4 border-b border-gray-600">Actions</th>
+                  <th className="py-3 px-4 border-b border-gray-600">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -133,21 +132,25 @@ const Pending_Withdrawal = () => {
                         {item.user_id}
                       </td>
                       <td className="py-4 px-4 border-b border-gray-600">
-                      ₹{item.withdrawal_amount}
+                        ₹{item.withdrawal_amount}
                       </td>
                       <td className="py-4 px-4 border-b border-gray-600">
                         {item.is_success ? "Success" : "Pending"}
                       </td>
                       <td className="py-4 px-4 border-b border-gray-600">
-                      {new Date(item.withdrawal_date).toLocaleDateString(
-                        "en-IN",
-                        {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        }
-                      )}
-                    </td>
+                        {new Date(item.withdrawal_date).toLocaleString(
+                          "en-IN",
+                          {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true, // Optional: to show time in 12-hour format with AM/PM
+                          }
+                        )}
+                      </td>
+
                       <td
                         onClick={() => handleModalClicked(item)}
                         className=" cursor-pointer bg-blue-500 rounded text-center  transition-colors duration-300 hover:bg-blue-600"

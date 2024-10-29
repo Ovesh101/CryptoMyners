@@ -4,9 +4,13 @@ const Modal = ({ showModal, setShowModal, user, handleUpdate }) => {
   const [formData, setFormData] = useState(user);
 
   const handleChange = (e) => {
- 
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value, // Ensure you are spreading the rest of formData and updating only the target field
+    });
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,7 +29,9 @@ const Modal = ({ showModal, setShowModal, user, handleUpdate }) => {
       <div className="bg-gray-800 text-white p-4 rounded-lg shadow-lg max-w-md w-full max-h-[80%] overflow-y-auto">
         <h2 className="text-xl font-semibold mb-4">Update Information</h2>
         <form onSubmit={handleSubmit}>
-          <div className="bg-[#7D60F9] font-bold text-white p-3 mb-4 rounded-xl">User Information</div>
+          <div className="bg-[#7D60F9] font-bold text-white p-3 mb-4 rounded-xl">
+            User Information
+          </div>
           <div className="mb-4">
             <label className="block mb-2">First Name</label>
             <input
@@ -71,7 +77,9 @@ const Modal = ({ showModal, setShowModal, user, handleUpdate }) => {
             />
           </div>
 
-          <div className="bg-[#7D60F9] font-bold text-white p-3 mb-4 rounded-xl">Bank Information</div>
+          <div className="bg-[#7D60F9] font-bold text-white p-3 mb-4 rounded-xl">
+            Bank Information
+          </div>
           <div className="mb-4">
             <label className="block mb-2">Account Number:</label>
             <input
@@ -91,7 +99,6 @@ const Modal = ({ showModal, setShowModal, user, handleUpdate }) => {
               value={formData.bank_name || ""}
               onChange={handleChange}
               className="w-full border bg-gray-800 px-2 py-1 rounded"
-            
             />
           </div>
           <div className="mb-4">
@@ -102,7 +109,6 @@ const Modal = ({ showModal, setShowModal, user, handleUpdate }) => {
               value={formData.ifsc_code || ""}
               onChange={handleChange}
               className="w-full border bg-gray-800 px-2 py-1 rounded"
-             
             />
           </div>
           <div className="mb-4">
@@ -113,7 +119,6 @@ const Modal = ({ showModal, setShowModal, user, handleUpdate }) => {
               value={formData.upi_id || ""}
               onChange={handleChange}
               className="w-full border bg-gray-800 px-2 py-1 rounded"
-              
             />
           </div>
           <div className="mb-4">
@@ -121,29 +126,39 @@ const Modal = ({ showModal, setShowModal, user, handleUpdate }) => {
             <input
               type="text"
               name="aadhaar_number"
+              maxLength={12}
+              minLength={12}
               value={formData.aadhaar_number || ""}
               onChange={handleChange}
               className="w-full border bg-gray-800 px-2 py-1 rounded"
-            
             />
           </div>
+
           <div className="mb-4">
             <label className="block mb-2">PAN Number</label>
             <input
               type="text"
               name="pan_card"
+              maxLength={10}
+              minLength={10}
               value={formData.pan_card || ""}
               onChange={handleChange}
               className="w-full border bg-gray-800 px-2 py-1 rounded"
-            
             />
           </div>
 
           <div className="flex justify-end">
-            <button type="submit" className="bg-[#7D60F9] text-white py-2 px-4 rounded mr-2">
+            <button
+              type="submit"
+              className="bg-[#7D60F9] text-white py-2 px-4 rounded mr-2"
+            >
               Save Changes
             </button>
-            <button type="button" onClick={handleClose} className="bg-red-500 text-white py-2 px-4 rounded">
+            <button
+              type="button"
+              onClick={handleClose}
+              className="bg-red-500 text-white py-2 px-4 rounded"
+            >
               Cancel
             </button>
           </div>

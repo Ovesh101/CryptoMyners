@@ -163,8 +163,11 @@ const Pending_Deposit = () => {
                           "en-IN",
                           {
                             year: "numeric",
-                            month: "long",
+                            month: "short",
                             day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true, // Optional: to show time in 12-hour format with AM/PM
                           }
                         )}
                       </td>

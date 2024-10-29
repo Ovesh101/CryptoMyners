@@ -24,6 +24,9 @@ const View_Machine = () => {
           `${HOST_URL}/display+machine/getall+display+machines`
         );
         setMachines(response.data); // Assuming response.data is an array of machines
+        console.log("use effect called");
+        
+   
       } catch (err) {
         setError("Error fetching machines");
         console.error(err);
@@ -60,12 +63,12 @@ const View_Machine = () => {
     try {
       // Make the PUT or POST request to the API
       const response = await axios.put(`${HOST_URL}/display+machine/updatemachine`, updateInfo);
+      setFlag(true)
   
       // Handle the response
       if (response.status === 200) {
         console.log("Update successful:", response.data);
         toast.success("Machine updated successfully!");
-        setFlag(true)
       } else {
         toast.error("Failed to update the machine.");
       }

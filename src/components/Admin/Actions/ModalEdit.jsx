@@ -75,7 +75,7 @@ const ModalEdit = ({ showModal, setShowModal, type, data, handleUpdate }) => {
               <div className="mb-4">
                 <label className="block mb-2">Interest Per Day</label>
                 <input
-                  type="number"
+                  type="text"
                   name="interest_per_day"
                   value={formData.interest_per_day}
                   onChange={handleChange}
