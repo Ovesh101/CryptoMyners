@@ -33,6 +33,8 @@ function Header() {
     };
     if(!userId){
       navigate('/login')
+    }else{
+      navigate("/machine_listing")
     }
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
