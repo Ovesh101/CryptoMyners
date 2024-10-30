@@ -47,7 +47,7 @@ const Profile = () => {
   }, []);
 
   const handleUpdate = async (updatedData) => {
-      console.log("user" , user.user_id);
+      console.log("user profile" , updatedData);
       
     
     const patchUrl = `${HOST_URL}/user/update+basicdata/${user.user_id}`; // Using user_id from the user object
