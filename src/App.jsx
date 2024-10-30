@@ -4,7 +4,7 @@ import Header from "./components/Header";
 import LandingPage from "./components/LandingPage";
 import Login from "./components/Login";
 import Footer from "./components/Footer";
-import {  useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import Machine_Listing from "./components/Machine_Listing";
 import Profile from "./components/Profile";
@@ -31,7 +31,7 @@ import Create_Machine from "./components/Admin/Actions/Create_Machine";
 import View_Machine from "./components/Admin/Actions/View_Machine";
 
 import User_Pending_Deposit from "./components/User_Pending_Despoit";
-import  { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import Video_Section from "./components/Video_Section";
 import NotFound from "./components/NotFound";
 import Privacy_Policy from "./components/Privacy_Policy";
@@ -40,13 +40,13 @@ import Terms from "./components/Terms";
 import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
-  const [userId] = useLocalStorage("authToken"); // 1 hour expiry
-
-
+  const [userId] = useLocalStorage("authToken");
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("user id", userId);
+
     const userApiUrl = `${HOST_URL}/user/getSingleUser/${userId}`;
     const user_pending_deposit_API = `${HOST_URL}/pending+request/getsingleuser+pendingmachine/${userId}`;
 
@@ -54,7 +54,8 @@ function App() {
       try {
         const response = await axios.get(userApiUrl);
         dispatch(addUser(response.data));
- 
+
+        console.log(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -63,14 +64,14 @@ function App() {
     const fetchUserPendingDeposit = async () => {
       try {
         const response = await axios.get(user_pending_deposit_API);
-   
 
         dispatch(addUserPendingDeposit(response.data));
       } catch (error) {
         console.log(error);
       }
     };
- 
+
+
 
     fetchUserPendingDeposit();
 
@@ -82,7 +83,7 @@ function App() {
       path: "/",
       element: (
         <>
-          <ScrollToTop /> 
+          <ScrollToTop />
           <Header />
           <Outlet /> {/* This renders the child routes */}
           <Footer />
@@ -203,7 +204,6 @@ function App() {
           path: "/terms",
           element: <Terms />,
         },
-        
 
         {
           path: "*",

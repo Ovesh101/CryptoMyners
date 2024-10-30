@@ -14,8 +14,16 @@ function Header() {
     (store) => store.user.userPendingDeposit
   );
 
+  console.log("user pending data" , user_pending_deposit);
+  console.log("user data in header" , user_data);
+  
+  
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+
+  
 
 
 
@@ -27,7 +35,6 @@ function Header() {
     if(!userId){
       navigate('/login')
     }
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
 

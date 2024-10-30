@@ -16,9 +16,13 @@ const Layout = ({ children }) => {
   useEffect(() => {
     const fetchUserPendingDeposit = async () => {
       const user_pending_deposit_API = `${HOST_URL}/pending+request/getsingleuser+pendingmachine/${userId}`;
+      console.log("user id in pending" , userId);
+      
 
       try {
         const response = await axios.get(user_pending_deposit_API);
+        console.log("pending machine" , response.data );
+        
 
 
         dispatch(addUserPendingDeposit(response.data));
@@ -26,6 +30,9 @@ const Layout = ({ children }) => {
         console.log(error);
       }
     };
+
+    console.log("layout called");
+    
 
     if(!userId){
       navigate("/login")
