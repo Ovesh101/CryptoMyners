@@ -54,6 +54,8 @@ function App() {
       try {
         const response = await axios.get(userApiUrl);
         dispatch(addUser(response.data));
+    
+        
 
       } catch (error) {
         console.log(error);
