@@ -74,7 +74,7 @@ const View_Qrcode = () => {
       return;
     }
   
-    console.log("QR Code info being updated:", updateInfo);
+
   
     try {
       // Make the PUT or POST request to the API with the id in the URL
@@ -85,7 +85,7 @@ const View_Qrcode = () => {
   
       // Handle the response
       if (response.status === 200) {
-        console.log("QR Code updated successfully:", response.data);
+       
         toast.success("QR Code updated successfully!");
         setFlag(true)
       } else {

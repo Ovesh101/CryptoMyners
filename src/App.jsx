@@ -45,7 +45,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("user id", userId);
+   
 
     const userApiUrl = `${HOST_URL}/user/getSingleUser/${userId}`;
     const user_pending_deposit_API = `${HOST_URL}/pending+request/getsingleuser+pendingmachine/${userId}`;
@@ -55,7 +55,6 @@ function App() {
         const response = await axios.get(userApiUrl);
         dispatch(addUser(response.data));
 
-        console.log(response.data);
       } catch (error) {
         console.log(error);
       }

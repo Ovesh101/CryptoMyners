@@ -14,8 +14,7 @@ function Header() {
     (store) => store.user.userPendingDeposit
   );
 
-  console.log("user pending data" , user_pending_deposit);
-  console.log("user data in header" , user_data);
+
   
   
 
